@@ -8,26 +8,26 @@
 
 import Foundation
 
-
 struct CalculatorLogic {
     
+    var number: Double
     
-    func calculate(calcMethod: String, input: Double) -> Double {
+    func calculate(symbol: String) -> Double? {
         
-        switch calcMethod {
+        switch symbol {
             
         case "+/-":
-            return input * (-1)
+            return number * (-1)
 
         case "AC":
             return 0
             
         case "%":
-            return input/100
+            return number/100
             
         default:
             print("Error with calculate method")
-            return 0
+            return nil
         }
     }
 }

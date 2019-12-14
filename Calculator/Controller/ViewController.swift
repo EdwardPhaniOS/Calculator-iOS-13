@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var displayLabel: UILabel!
     
     private var isFinishedTypingNumber = true
-    private var calculator: CalculatorLogic = CalculatorLogic()
     
     private var displayValue: Double {
         get {
@@ -38,7 +37,12 @@ class ViewController: UIViewController {
         isFinishedTypingNumber = true
         
         if let calcMethod = sender.currentTitle {
-            displayValue = calculator.calculate(calcMethod: calcMethod, input: displayValue)
+            let calculator = CalculatorLogic(number: displayValue)
+            
+            guard let result = calculator.calculate(symbol: calcMethod)
+                else { fatalError("The result of calculator is nil") }
+            
+            displayValue = result
         }
     }
     
@@ -50,7 +54,12 @@ class ViewController: UIViewController {
         if let numValue = sender.currentTitle {
             
             if isFinishedTypingNumber {
-                displayLabel.text = numValue
+                if numValue == "." {
+                    displayLabel.text = "0."
+                } else {
+                    displayLabel.text = numValue
+                }
+                
                 isFinishedTypingNumber = false
                 
             } else {
