@@ -4,30 +4,67 @@
 //
 //  Created by Tan Vinh Phan on 12/14/19.
 //  Copyright © 2019 London App Brewery. All rights reserved.
-//
 
 import Foundation
 
 struct CalculatorLogic {
     
-    var number: Double
+    private var number: Double?
     
-    func calculate(symbol: String) -> Double? {
+    private var intermediateCalculation: (n1: Double, calcMethod: String)?
+    
+    mutating func setNumber(_ number: Double) {
+        self.number = number
+    }
+    
+    mutating func calculate(symbol: String) -> Double? {
         
-        switch symbol {
+        if let n = number {
             
-        case "+/-":
-            return number * (-1)
-
-        case "AC":
-            return 0
+            switch symbol {
+                
+            case "+/-":
+                return n * (-1)
+                
+            case "AC":
+                return 0
+                
+            case "%":
+                return n/100
+                
+            case "=":
+                return performTwoNumCalculation(n2: n)
+                
+            default:
+                intermediateCalculation = (n1: n, calcMethod: symbol)
+            }
             
-        case "%":
-            return number/100
-            
-        default:
-            print("Error with calculate method")
-            return nil
         }
+        return nil
+    }
+    
+    func performTwoNumCalculation(n2: Double) -> Double? {
+        
+        if let n1 = intermediateCalculation?.n1,
+            let symbol = intermediateCalculation?.calcMethod {
+            
+            switch symbol {
+            case "+":
+                return n1 + n2
+                
+            case "-":
+                return n1 - n2
+                
+            case "×":
+                return n1 * n2
+                
+            case "÷":
+                return n1 / n2
+                
+            default:
+                fatalError("Error with performTwoNumCalculation, the operation passed in does not match any of the cases")
+            }
+        }
+        return nil
     }
 }
