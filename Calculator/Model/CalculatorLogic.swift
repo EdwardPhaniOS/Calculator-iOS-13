@@ -27,6 +27,7 @@ struct CalculatorLogic {
                 return n * (-1)
                 
             case "AC":
+                intermediateCalculation = (n1: 0, calcMethod: symbol)
                 return 0
                 
             case "%":
@@ -60,6 +61,9 @@ struct CalculatorLogic {
                 
             case "÷":
                 return n1 / n2
+                
+            case "AC":
+                return 0
                 
             default:
                 fatalError("Error with performTwoNumCalculation, the operation passed in does not match any of the cases")
